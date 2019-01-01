@@ -8,7 +8,8 @@ class App extends Component {
 		this.state = {
 			loading: true,
 			autor: 'Taras',
-			persons: []
+			persons: [],
+			namePeople: ''
 		};
 	}
 
@@ -30,22 +31,38 @@ class App extends Component {
 			});
 	};
 
+	changeName = (e) => {
+		e.preventDefault();
+		this.setState({
+			namePeople: e.target.value
+		});
+	};
+
 	render() {
 		console.log(this.state);
 		const persons = this.state.persons.map((item, i) => (
 			<div key={i}>
-				<h1>{item.name.first}</h1>
+				{this.state.namePeople.length > 0 && <h1>Name: {this.state.namePeople}</h1>}
+				{this.state.namePeople.length === 0 && <h1>Name: {item.name.first}</h1>}
+				<img src={item.picture.large} alt="" />
+				<h4> City: {item.location.city}</h4>
 				<span>
-					{item.cell}, {item.email}
+					Phone: {item.cell}, Email: {item.email}
 				</span>
 			</div>
 		));
 		return (
-			<div>
+			<div className="container">
 				{this.state.loading === false && (
 					<div>
 						<h1>My name is {this.state.autor}</h1>
 						<div>{persons}</div>
+						<form>
+							<label>
+								Chage Name:
+								<input onChange={this.changeName.bind(this)} type="text" name="name" />
+							</label>
+						</form>
 					</div>
 				)}
 			</div>
